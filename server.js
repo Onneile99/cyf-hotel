@@ -36,10 +36,18 @@ app.use(express.static("assets"));
 app.get("/customers", function(req, res) {
   db.all("SELECT name, email, phone, address, city " +
          "FROM customers", function (err, rows) {
-    rows.forEach(function (row) {
-      console.log(row.name, row.email, row.phone,
-                  row.address, row.city);
-    });
+    // rows.forEach(function (row) {
+    //   console.log(row.name, row.email, row.phone,
+    //               row.address, row.city);
+    // });
+
+    // res.status(200).json({
+    //   customer:rows
+    // })
+    const myData={
+    customer:rows
+    };
+    res.status(200).json(myData);
   });
 });
 
