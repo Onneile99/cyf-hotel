@@ -33,15 +33,21 @@ app.use(express.static("assets"));
 // handle HTTP POST requests
 // app.use(bodyparser.json());
 
+app.get("/", function (req, res, next) {
+  res.render("home");
+});
+
 app.get("/customers", function(req, res) {
   db.all("SELECT name, email, phone, address, city " +
          "FROM customers", function (err, rows) {
+
     // rows.forEach(function (row) {
     //   console.log(row.name, row.email, row.phone,
     //               row.address, row.city);
     // });
 
-    // res.status(200).json({
+// Line 50-52 same as 
+    // res.status(200).json({ 
     //   customer:rows
     // })
     const myData={
@@ -51,10 +57,23 @@ app.get("/customers", function(req, res) {
   });
 });
 
+app.get("/customers/:id", function(req, res) {
+  var id = req.params.id;
+  // we’ll add code here ...
+  // console.log(`Hey customer number`)
 
-app.get("/", function (req, res, next) {
-  res.render("home");
+  db.get("SELECT * FROM customers WHERE id = ?", [id],
+    function (err, row){
+  // we’ll add code here next ...
+
+  // console.log("selected row!", err, row);
+
+  res.status(200).json({
+      customers:row
+    })
 });
+});
+
 
 app.listen(SERVER_PORT, () => {
   console.info(`Server started at http://localhost:${SERVER_PORT}`);
